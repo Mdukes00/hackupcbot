@@ -1,36 +1,25 @@
-
-
 #include <Stream.h>
 #include <Wire.h>
 #include <Adafruit_MotorShield.h>
 #include "utility/Adafruit_MS_PWMServoDriver.h"
 
-// Create the motor shield object with the default I2C address
-Adafruit_MotorShield AFMS = Adafruit_MotorShield();
-// Or, create it with a different I2C address (say for stacking)
-// Adafruit_MotorShield AFMS = Adafruit_MotorShield(0x61);
 
-// Select which 'port' M1, M2, M3 or M4. In this case, M1
+Adafruit_MotorShield AFMS = Adafruit_MotorShield();
 Adafruit_DCMotor *leftMotor = AFMS.getMotor(1);
-// You can also make another motor on port M2
 Adafruit_DCMotor *rightMotor = AFMS.getMotor(2);
 
+char keystroke = 7;
+char newkeystroke = 7;
 void setup() {
-  Serial.begin(9600);           // set up Serial library at 9600 bps
+  Serial.begin(9600);
   Serial.println("Adafruit Motorshield v2 - DC Motor test!");
-
-  AFMS.begin();  // create with the default frequency 1.6KHz
-  //AFMS.begin(1000);  // OR with a different frequency, say 1KHz
-
-  // Set the speed to start, from 0 (off) to 255 (max speed)
-
-
+  AFMS.begin();
 }
 
 void loop() {
-  char keystroke;
-  if (Serial.available() > 0) {
-    keystroke = Serial.read();
+
+  if (keystroke != newkeystroke) {
+    keystroke = newkeystroke;
     switch (keystroke) {
       case '1':
         Serial.println("Forward");
@@ -57,21 +46,54 @@ void loop() {
         Serial.println("Destory all other robots....");
         break;
       default:
-        // if nothing else matches, do the default
-        // default is optional
+        Serial.println("Maybe the last thing should be happening" );
+        break;
+    }
+
+  }
+
+  if (keystroke == newkeystroke) {
+
+    switch (keystroke) {
+      case '1':
+        Serial.println("Forward");
+        break;
+      case '2':
+        Serial.println("Backward");
+        break;
+      case '3':
+        Serial.println("TurnLeft");
+        break;
+      case '4':
+        Serial.println("DriveLeft");
+        break;
+      case '5':
+        Serial.println("TurnRight");
+        break;
+      case '6':
+        Serial.println("DriveRight");
+        break;
+      case '7':
+        Serial.println("Stop");
+        break;
+      case '8':
+        Serial.println("Destory all other robots....");
+        break;
+      default:
+        Serial.println("Maybe the last thing should be happening" );
         break;
     }
   }
-
 }
 
 
 
-
-
-
-
-
+void serialEvent() {
+  while (Serial.available()) {
+    // get the new byte:
+    newkeystroke = Serial.read();
+  }
+}
 
 void SetSpeed(int right, int left) {
   leftMotor->setSpeed(left);
