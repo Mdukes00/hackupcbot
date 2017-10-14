@@ -7,7 +7,7 @@
 Adafruit_MotorShield AFMS = Adafruit_MotorShield();
 Adafruit_DCMotor *leftMotor = AFMS.getMotor(1);
 Adafruit_DCMotor *rightMotor = AFMS.getMotor(2);
-
+String stringFromConsole;
 char keystroke = 7;
 char newkeystroke = 7;
 void setup() {
@@ -91,7 +91,8 @@ void loop() {
 void serialEvent() {
   while (Serial.available()) {
     // get the new byte:
-    newkeystroke = Serial.read();
+    stringFromConsole = Serial.read();
+    newkeystroke = stringFromConsole[1];
   }
 }
 
