@@ -1,12 +1,3 @@
-/* 
-This is a test sketch for the Adafruit assembled Motor Shield for Arduino v2
-It won't work with v1.x motor shields! Only for the v2's with built in PWM
-control
-
-For use with the Adafruit Motor Shield v2 
----->	http://www.adafruit.com/products/1438
-*/
-
 #include <Wire.h>
 #include <Adafruit_MotorShield.h>
 #include "utility/Adafruit_MS_PWMServoDriver.h"
@@ -17,9 +8,9 @@ Adafruit_MotorShield AFMS = Adafruit_MotorShield();
 // Adafruit_MotorShield AFMS = Adafruit_MotorShield(0x61); 
 
 // Select which 'port' M1, M2, M3 or M4. In this case, M1
-Adafruit_DCMotor *myMotor = AFMS.getMotor(1);
+Adafruit_DCMotor *leftMotor = AFMS.getMotor(1);
 // You can also make another motor on port M2
-//Adafruit_DCMotor *myOtherMotor = AFMS.getMotor(2);
+Adafruit_DCMotor *rightMotor = AFMS.getMotor(2);
 
 void setup() {
   Serial.begin(9600);           // set up Serial library at 9600 bps
@@ -29,40 +20,77 @@ void setup() {
   //AFMS.begin(1000);  // OR with a different frequency, say 1KHz
   
   // Set the speed to start, from 0 (off) to 255 (max speed)
-  myMotor->setSpeed(150);
-  myMotor->run(FORWARD);
-  // turn on motor
-  myMotor->run(RELEASE);
+  
+
 }
 
-void loop() {
-  uint8_t i;
+void loop() { 
   
-  Serial.print("tick");
+Forward();
+delay(500);
 
-  myMotor->run(FORWARD);
-  for (i=0; i<255; i++) {
-    myMotor->setSpeed(i);  
-    delay(10);
-  }
-  for (i=255; i!=0; i--) {
-    myMotor->setSpeed(i);  
-    delay(10);
-  }
-  
-  Serial.print("tock");
+TurnLeft();
+delay(500);
 
-  myMotor->run(BACKWARD);
-  for (i=0; i<255; i++) {
-    myMotor->setSpeed(i);  
-    delay(10);
-  }
-  for (i=255; i!=0; i--) {
-    myMotor->setSpeed(i);  
-    delay(10);
+DriveLeft();
+delay(500);
+
+TurnRight();
+delay(500);
+
+DriveRight();
+delay(500);
+
+Backward();
+delay(500);
+
+Stop();
+delay(500);
+
   }
 
-  Serial.print("tech");
-  myMotor->run(RELEASE);
-  delay(1000);
+void SetSpeed(int right, int left){
+  leftMotor->setSpeed(left);
+  rightMotor->setSpeed(right);
+}
+
+void Forward(){
+  SetSpeed(255,255);
+  rightMotor->run(FORWARD);
+  leftMotor->run(FORWARD);
+}
+
+void Backward(){
+  SetSpeed(255,255);
+  rightMotor->run(BACKWARD);
+  leftMotor->run(BACKWARD);
+}
+void TurnLeft(){
+  SetSpeed(255,255); 
+  rightMotor->run(FORWARD);
+  leftMotor->run(BACKWARD);
+}
+
+void TurnRight(){
+  SetSpeed(255,255);
+  rightMotor->run(BACKWARD);
+  leftMotor->run(FORWARD);
+}
+
+void DriveLeft(){
+  SetSpeed(255,50);
+  rightMotor->run(FORWARD);
+  leftMotor->run(FORWARD);
+}
+
+void DriveRight(){
+  SetSpeed(50,255);
+  rightMotor->run(FORWARD);
+  leftMotor->run(FORWARD);
+}
+
+void Stop(){
+  SetSpeed(0,0);
+  rightMotor->run(RELEASE);
+  leftMotor->run(RELEASE);
 }
