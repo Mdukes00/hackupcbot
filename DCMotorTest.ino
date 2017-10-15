@@ -22,31 +22,29 @@ void loop() {
     keystroke = newkeystroke;
     switch (keystroke) {
       case '1':
-        Serial.println("Forward");
+        Forward();
         break;
       case '2':
-        Serial.println("Backward");
+        Backward();
         break;
       case '3':
-        Serial.println("TurnLeft");
+        TurnLeft();
         break;
       case '4':
-        Serial.println("DriveLeft");
+        DriveLeft();
         break;
       case '5':
-        Serial.println("TurnRight");
+        TurnRight();
         break;
       case '6':
-        Serial.println("DriveRight");
+        DriveRight();
         break;
       case '7':
-        Serial.println("Stop");
+        Stop();
         break;
       case '8':
-        Serial.println("Destory all other robots....");
         break;
       default:
-        Serial.println("Maybe the last thing should be happening" );
         break;
     }
 
@@ -56,31 +54,29 @@ void loop() {
 
     switch (keystroke) {
       case '1':
-        Serial.println("Forward");
+        Forward();
         break;
       case '2':
-        Serial.println("Backward");
+        Backward();
         break;
       case '3':
-        Serial.println("TurnLeft");
+        TurnLeft();
         break;
       case '4':
-        Serial.println("DriveLeft");
+        DriveLeft();
         break;
       case '5':
-        Serial.println("TurnRight");
+        TurnRight();
         break;
       case '6':
-        Serial.println("DriveRight");
+        DriveRight();
         break;
       case '7':
-        Serial.println("Stop");
+        Stop();
         break;
       case '8':
-        Serial.println("Destory all other robots....");
         break;
       default:
-        Serial.println("Maybe the last thing should be happening" );
         break;
     }
   }
@@ -91,14 +87,16 @@ void loop() {
 void serialEvent() {
   while (Serial.available()) {
     // get the new byte:
-    stringFromConsole = Serial.read();
-    newkeystroke = stringFromConsole[1];
+    newkeystroke = Serial.read();
+     Serial.println(newkeystroke);
+  //  newkeystroke = stringFromConsole[1];
   }
 }
 
 void SetSpeed(int right, int left) {
   leftMotor->setSpeed(left);
   rightMotor->setSpeed(right);
+     Serial.println(String(newkeystroke));
 }
 
 void Forward() {
